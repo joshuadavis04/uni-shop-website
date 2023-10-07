@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %} - The Luton Town Marketplace</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    {% block scripts %} {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Luton Town Marketplace</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('about')}}">About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ url_for('cart') }}">
+                            Cart <span class="badge">{{ cart_count }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <div class = "base text-center">
+        <img src="{{ url_for('static', filename='website/THE LUTON TOWN MARKETPLACE.png') }}" alt="The Luton Town Marketplace" width="30%">
+    </div>
+    <div class="content">
+        {% for product in get_flashed_messages() %}
+            <div class="alert">{{ product }}</div>
+        {% endfor %}
+        {% block content %} {% endblock %}
+    </div>
+    <footer>
+        <div class="container">
+            <h3 class = "base text-center">Our Sponsors</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <img src="{{ url_for('static', filename='website/Advert1.png') }}" alt="Sponsor 1" width="100%">
+                </div>
+                <div class="col-sm-6">
+                    <img src="{{ url_for('static', filename='website/Advert2.png') }}" alt="Sponsor 2" width="100%">
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1 class="base text-center">Shop</h1>
+    <form action="{{ url_for('index', sort_by=request.args.get('sort_by')) }}" method="get" class="base text-center">
+        <label for="sort_by">Sort by:</label>
+        <select name="sort_by" id="sort_by">
+            <option value="">--</option>
+            <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Price</option>
+            <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+        </select>
+        <label for="sort_order">Sort order:</label>
+        <select name="sort_order" id="sort_order">
+            <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Ascending</option>
+            <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Descending</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+    <hr>
+    <div class="product-container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <table>
+            {% if show_table_headings %}
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Ecological Footprint</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            {% endif %}
+
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.content }}</td>
+                        <td><a href="{{ url_for('product', id=product.id) }}" ><img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.title }}" style="max-width: 150px;"></a></td>
+                        <td style="padding-right: 10px;">£{{ product.price }}</td>
+                        <td>{{ product.ecological_footprint }}</td>
+                        <td>
+                            <form action="{{ url_for('add_to_cart') }}" method="post">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <input type="hidden" name="product_title" value="{{ product.title }}">
+                                <input type="hidden" name="product_price" value="{{ product.price }}">
+                                <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
